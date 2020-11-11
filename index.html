@@ -11,9 +11,62 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+
+      
+      .reg {
+          position: fixed;
+          width: 100%;
+          height: 100vh;
+          background-color: green;
+          display: flex;
+      }
+
+      .container {
+          margin: auto;
+      }
+
+      .participants {
+        background-color: greenyellow;
+        width: 30%;
+        height: 100vh;
+        float: left;
+      }
+
+      .chat {
+        background-color: hotpink;
+        width: 70%;
+        height: 100vh;
+        float: right;
+      }
+      
+      .main_user {
+        width: 100%;
+        height: 100px;
+        background-color: white;
+      }
+
+    </style>
     </style>
   </head>
   <body>
+    <div class="reg">
+      <div class="container">
+          <input class='user_name' name="user_name" required>
+          <button class="reg_name">Войти</button>
+      </div>
+    </div>
+    <div class="participants">
+        <div class="main_user">
+
+        </div>
+        <div class="list_users">
+
+        </div>
+    </div>
+    <div class="chat">
+
+    </div>
+
     <ul id="messages"></ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
@@ -21,8 +74,11 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
+      
     $(function () {
         var socket = io();
+        // var tab = window.open(url);
+
         $('form').submit(function(e){
             e.preventDefault(); // prevents page reloading
             socket.emit('chat message', $('#m').val());
@@ -32,7 +88,40 @@
         socket.on('chat message', function(msg){
             $('#messages').append($('<li>').text(msg));
         });
+
+        window.onbeforeunload  = () => {
+          socket.emit('logout user', userName);
+        }
+
+        socket.on('logout user', function(name){
+            let userRow = document.body.querySelector(`#${name}`)
+            userRow.remove()
+        });
+
+        var regCont = document.body.querySelector('.reg'),
+            regBtn = document.body.querySelector('.reg_name'),
+            inputName = document.body.querySelector('.user_name'),
+            userName,
+            mainUser = document.body.querySelector('.main_user'),
+            listUsers = document.body.querySelector('.list_users');
+    
+        regBtn.addEventListener('click', function() {
+            if (inputName.value) {
+                userName = inputName.value;
+                regCont.style.display = 'none'
+                socket.emit('new user', userName);
+                mainUser.innerHTML = userName;
+                // listUsers.innerHTML += `<div>${userName}</div>`
+                socket.on('new user', function(name){
+                  // alert(names)
+                  listUsers.innerHTML += `<div id=${name}>${name}</div>`
+              });
+            }
+        })
     });
+    
+    
+
     </script>
   </body>
 </html>
