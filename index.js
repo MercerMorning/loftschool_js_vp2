@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var userName;
+var users = [];
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -30,8 +30,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new user', (name) => {
-      userName = name;
-      io.emit('new user', name);
+      users.push( { name : name } )
+      io.emit('new user', users);
       console.log('user: ' + name);
   });
 });

@@ -111,10 +111,11 @@
                 regCont.style.display = 'none'
                 socket.emit('new user', userName);
                 mainUser.innerHTML = userName;
-                // listUsers.innerHTML += `<div>${userName}</div>`
-                socket.on('new user', function(name){
-                  // alert(names)
-                  listUsers.innerHTML += `<div id=${name}>${name}</div>`
+                socket.on('new user', function(users){
+                  for (let user of users) {
+                    listUsers.innerHTML += `<div id=${user.name}>${user.name}</div>`
+                } 
+                 
               });
             }
         })
