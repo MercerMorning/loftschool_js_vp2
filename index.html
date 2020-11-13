@@ -6,7 +6,7 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form { padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
       #messages { list-style-type: none; margin: 0; padding: 0; }
@@ -74,14 +74,40 @@
       }
 
       .participants {
-        background-color: greenyellow;
+        background-color: rgb(36, 47, 61);
         width: 30%;
         height: 100vh;
         float: left;
       }
 
+      .avatar {
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        border-radius: 50%;
+        float: left;
+        margin-right: 20px;
+      }
+
+      .about {
+        background-color: rgb(36, 47, 61);
+        padding: 10px;
+        margin-left: 2px;
+      }
+
+      .p-n {
+        color: white;
+        font-size: 24px;
+      }
+
+      .p-d {
+        color:rgb(127, 145, 164);
+        font-size: 20px;
+      }
+
       .chat {
-        background-color: hotpink;
+       
+        background-color: #17212b;
         width: 70%;
         height: 100vh;
         float: right;
@@ -90,14 +116,23 @@
       .main_user {
         width: 100%;
         height: 100px;
-        background-color: white;
+        margin: 20px;
+        display: flex;
+        align-items: center;
       }
 
-    </style>
+      #m {
+        border: none;
+        background-color: rgb(36, 47, 61);
+        margin-left: 2px;
+        padding: 20px;
+      }
+
+
     </style>
   </head>
   <body>
-    <div class="reg">
+    <div class="reg"  style="display: none;">
       <div class="container">
         <div class="rectangle">
           <svg 
@@ -119,26 +154,36 @@
           <input class='user_name' name="user_nick" placeholder="Введите свой ник" required>
           <br>
           <br>
-          <button class="btn">Войти</button>
+          <button class="btn reg_btn">Войти</button>
         </div>
       </div>
     </div>
     <div class="participants">
-        <div class="main_user">
-
+        <div class="main_user">  
+          <div class="avatar"></div>
+          <div class="user-info">
+            <p class="user-name p-n">Николай</p>
+            <p class="user-last-message p-d">Привет!</p>
+          </div>
         </div>
         <div class="list_users">
 
         </div>
     </div>
     <div class="chat">
+      <div class="about">
+        <p class="p-n">Чат</p>
+        <br>
+        <p class="p-d">2 учатсника</p>
+      </div>
       <ul id="messages"></ul>
+      <form action="">
+        <input id="m" autocomplete="off" placeholder="Введите сообщение..."/><button>Send</button>
+      </form>
     </div>
 
     
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
@@ -167,7 +212,7 @@
         });
 
         var regCont = document.body.querySelector('.reg'),
-            regBtn = document.body.querySelector('.reg_name'),
+            regBtn = document.body.querySelector('.reg_btn'),
             inputName = document.body.querySelector('.user_name'),
             userName,
             mainUser = document.body.querySelector('.main_user'),
