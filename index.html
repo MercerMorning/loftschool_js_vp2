@@ -6,12 +6,12 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      form { padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form { padding: 3px; bottom: 0; width: 100%; background-color: rgb(36, 47, 61); margin-left: 2px;}
       form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; flex-grow: 1;}
       #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
 
       
       .reg {
@@ -111,6 +111,8 @@
         width: 70%;
         height: 100vh;
         float: right;
+        display: flex;
+        flex-direction: column;
       }
       
       .main_user {
@@ -123,7 +125,7 @@
 
       #m {
         border: none;
-        background-color: rgb(36, 47, 61);
+        background-color: transparent;
         margin-left: 2px;
         padding: 20px;
       }
@@ -176,7 +178,17 @@
         <br>
         <p class="p-d">2 учатсника</p>
       </div>
-      <ul id="messages"></ul>
+      <ul id="messages">
+        <li>
+          <div class="main_user">  
+            <div class="avatar"></div>
+            <div class="user-info">
+              <p class="p-d">Привет!</p>
+              <p class="time p-d">17:00</p>
+            </div>
+          </div>
+        </li>
+      </ul>
       <form action="">
         <input id="m" autocomplete="off" placeholder="Введите сообщение..."/><button>Send</button>
       </form>
