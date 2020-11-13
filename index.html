@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="style.css">
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -17,12 +18,59 @@
           position: fixed;
           width: 100%;
           height: 100vh;
-          background-color: green;
+          background-color: #09101a;
           display: flex;
       }
 
+      .btn {
+        background-color:  rgb(82, 136, 193);
+        border: none;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .reg-form {
+        width: 60%;
+        margin: auto;
+      }
+
+      .reg-form h1 {
+        color: white
+      }
+
+      .reg-form input {
+        border: none;
+        color: white;
+        padding-bottom: 2px;
+        border-bottom: 2px solid rgb(82, 136, 193);
+        outline: none;
+        background-color: transparent;
+      }
+
+      .reg-form span {
+        color: rgb(127, 145, 164);
+      }
+
       .container {
+          text-align: center;
+          width: 400px;
+          height: 500px;
+          background-color: #17212b;
           margin: auto;
+      }
+
+      .rectangle {
+        background-color: rgb(36, 47, 61);
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        padding: 0 10px;
       }
 
       .participants {
@@ -51,8 +99,28 @@
   <body>
     <div class="reg">
       <div class="container">
-          <input class='user_name' name="user_name" required>
-          <button class="reg_name">Войти</button>
+        <div class="rectangle">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="85px" height="66px">
+            <image  x="0px" y="0px" width="85px" height="66px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFUAAABCCAMAAAAR+GpLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB4FBMVEVSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMH////F271FAAAAnnRSTlMAM5DG2tfZ1rZuDiqv7IdG+rsRNccF5495F/mGgLFnEPBFtDbyDWI5GhwbHRRsyfv9/P66O8govAjd0lSehAaf8QE626ExXdQKV6rMwt5YZmgZoyLTm5LoWU6Imc/unJ10MG0kf0hHpCnrSyaicTLAeuFgT62lb5N3rgITLLUjhZoSNF/N1d/F0fgg6i8tIZGJD2PYZKdzq8qpxCfLBENrmfAAAAABYktHRJ/otZOdAAAAB3RJTUUH5AsNCSs4lRhkgAAAApVJREFUWMPt2OlXElEYBvC3AC0qbZFsodJES0sUMjXC1KIs0qyUgiSXNsqk1bS0Uiuyfd+X92/t3jtjxWz3zgx84zmHYYZ57u/MGYY7nAEQyKLFDqeLn6LiJUvdIh7NsuUonhUlYmjpShMoyarVAugacyZJGR/1rDWtYjlXXWceRVzPU8toa8NGr2A2MXUzB93CvqoK0csFKpm6ldOqYi1ftahaw/rFnNY2S6ozL8fqKqgFtaAW1IIqb7m319YpsmOnPdVd7/c1NAYUCe6ypTbp3PJ321Gb9e7qLTbU1j16asiGupcsG4u0/jiGbahtdNQ+vZZVtZ0sOzr1WvstqQcgYjjqoKR6RNVDrN8FYUP1sI+2OkRROMLUKEeFFtoKHHX4hdLdw9RjPLUXLaSap0p/YM3lOHDVExVm0ZPAV6Gv3xwaAxEV4NRpcbMrDoIqtCbOtA8kpWFnB4fCygzGYjHyFhkYHpFHiKgs5yT1vNB1K6xeYOhFrV2XUimvOfVyQl7xUnRYs0NmqCvm1FGMXP2rjml30oh+c+o1st/ZJqnXIVcqm2EdZOUG3qS1W7dzpo6TlTtYR5ZNOJFTdfIusPm2UkSNiKj3yMoUeU03II6KHqv+HQbgPlUfyBsPta/YCcRk9iczaHQ3BBih6qy8MUfWH6k7jxGfZH+SQHrnzug99+l/StWqhTaZbeej44pEnyEqfludGf5ENJ99ljUSnFMcfi0Xff7iX7smqNV4+Up1Vl67jNFM8//tN70z3fRaKylfyNt38fcaX4jnQyqkeLaW+chAnys59knVjyN+Bmv5QtWvmrvq8ZtFFGCIqN8190wGhJ8GqvND+qWqky61jsJ0j+XTZ5Sf+CsPKqRDU/lg+35bG/cHCpdecjQHoocAAAAASUVORK5CYII=" />
+          </svg>
+        </div>
+        <div class="reg-form">
+          <h1>Авторизация</h1>
+          <br>
+          <span>Введите пожалуйста свое фио и ник для дальнейшей авторизации</span>
+          <br>
+          <br>
+          <input class='user_name' name="user_name" placeholder="Введите ФИО" required> 
+          <br>
+          <br>
+          <input class='user_name' name="user_nick" placeholder="Введите свой ник" required>
+          <br>
+          <br>
+          <button class="btn">Войти</button>
+        </div>
       </div>
     </div>
     <div class="participants">
