@@ -134,7 +134,7 @@
     </style>
   </head>
   <body>
-    <div class="reg"  style="display: none;">
+    <div class="reg">
       <div class="container">
         <div class="rectangle">
           <svg 
@@ -161,13 +161,7 @@
       </div>
     </div>
     <div class="participants">
-        <div class="main_user">  
-          <div class="avatar"></div>
-          <div class="user-info">
-            <p class="user-name p-n">Николай</p>
-            <p class="user-last-message p-d">Привет!</p>
-          </div>
-        </div>
+      
         <div class="list_users">
 
         </div>
@@ -179,7 +173,7 @@
         <p class="p-d">2 учатсника</p>
       </div>
       <ul id="messages">
-        <li>
+        <!-- <li>
           <div class="main_user">  
             <div class="avatar"></div>
             <div class="user-info">
@@ -187,7 +181,7 @@
               <p class="time p-d">17:00</p>
             </div>
           </div>
-        </li>
+        </li> -->
       </ul>
       <form action="">
         <input id="m" autocomplete="off" placeholder="Введите сообщение..."/><button>Send</button>
@@ -206,12 +200,31 @@
 
         $('form').submit(function(e){
             e.preventDefault(); // prevents page reloading
-            socket.emit('chat message', $('#m').val());
+            let aMinuteAgo = new Date( (new Date()).getTime() - 1000 * 60 );
+            socket.emit('chat message', $('#m').val(), userName, aMinuteAgo);
             $('#m').val('');
             return false;
         });
-        socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
+
+        socket.on('chat message', function(messages){
+          for (let message of messages) {
+            messages.innerHTML += 
+              `
+              <li>
+                <div class="main_user">  
+                <div class="avatar"></div>
+                  <div class="user-info">
+                    <p class="p-d">${message.name}</p>
+                    <p class="p-d">${message.msg}</p>
+                    <p class="time p-d">${message.date}</p>
+                  </div>
+                </div>
+              </li>
+              `
+          }
+           
+            
+            // $('#messages').append($('<li>').text(msg));
         });
 
         window.onbeforeunload  = () => {
@@ -229,16 +242,31 @@
             userName,
             mainUser = document.body.querySelector('.main_user'),
             listUsers = document.body.querySelector('.list_users')
+            messages = document.body.querySelector('#messages')
+            form = document.body.querySelector('form')
     
         regBtn.addEventListener('click', function() {
             if (inputName.value) {
                 userName = inputName.value;
                 regCont.style.display = 'none'
                 socket.emit('new user', userName);
-                mainUser.innerHTML = userName;
+                // let newUser = `<div class="main_user">  
+                //   <div class="avatar"></div>
+                //     <div class="user-info">
+                //       <p id=${userName} class="user-name p-n">${userName}</p>
+                //       <p class="user-last-message p-d"></p>
+                //     </div>
+                // </div>`
+                // listUsers.innerHTML += newUser;
                 socket.on('new user', function(users){
                   for (let user of users) {
-                    listUsers.innerHTML += `<div id=${user.name}>${user.name}</div>`
+                    listUsers.innerHTML += `<div class="main_user">  
+                    <div class="avatar"></div>
+                      <div class="user-info">
+                        <p id=${user.name} class="user-name p-n">${user.name}</p>
+                        <p class="user-last-message p-d"></p>
+                      </div>
+                  </div>`
                 } 
                  
               });

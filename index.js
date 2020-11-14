@@ -2,6 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var users = [];
+var messages = [];
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -24,8 +25,9 @@ io.on('connection', (socket) => {
       io.emit('logout user', name)
     })
 
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    socket.on('chat message', (msg, name, date) => {
+        messages.push( {msg: msg, name: name, date: date})
+        io.emit('chat message', messages);
         console.log('message: ' + msg);
     });
 
