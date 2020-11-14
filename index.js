@@ -10,11 +10,16 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
     socket.broadcast.emit('hi');
+    
   console.log('a user connected');
 });
 
 io.on('connection', (socket) => {
     console.log('a user connected');
+
+    socket.on('messages', function() {
+      io.emit('showMessages', messages);
+    })
 
     socket.on('disconnect', (name) => {
       console.log('user disconnected');
@@ -27,7 +32,8 @@ io.on('connection', (socket) => {
 
     socket.on('chat message', (msg, name, date) => {
         messages.push( {msg: msg, name: name, date: date})
-        io.emit('chat message', messages);
+        console.log(messages)
+        io.emit('chat message', {msg: msg, name: name, date: date});
         console.log('message: ' + msg);
     });
 
@@ -36,9 +42,10 @@ io.on('connection', (socket) => {
       io.emit('new user', users);
       console.log('user: ' + name);
   });
+
+
 });
 
-io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' }); // This will emit the event to all connected sockets
 
 
 http.listen(3000, () => {

@@ -206,9 +206,26 @@
             return false;
         });
 
-        socket.on('chat message', function(messages){
+        socket.on('some event'), function(){
+          alert(123)
+          // messagesList.innerHTML += 
+          //     `
+          //     <li>
+          //       <div class="main_user">  
+          //       <div class="avatar"></div>
+          //         <div class="user-info">
+          //           <p class="p-d">${message.name}</p>
+          //           <p class="p-d">${message.msg}</p>
+          //           <p class="time p-d">${message.date}</p>
+          //         </div>
+          //       </div>
+          //     </li>
+          //     `
+        }
+
+        socket.on('showMessages', function(messages){
           for (let message of messages) {
-            messages.innerHTML += 
+            messagesList.innerHTML += 
               `
               <li>
                 <div class="main_user">  
@@ -222,6 +239,25 @@
               </li>
               `
           }
+           
+            
+            // $('#messages').append($('<li>').text(msg));
+        });
+
+        socket.on('chat message', function(message){
+            messagesList.innerHTML += 
+              `
+              <li>
+                <div class="main_user">  
+                <div class="avatar"></div>
+                  <div class="user-info">
+                    <p class="p-d">${message.name}</p>
+                    <p class="p-d">${message.msg}</p>
+                    <p class="time p-d">${message.date}</p>
+                  </div>
+                </div>
+              </li>
+              `
            
             
             // $('#messages').append($('<li>').text(msg));
@@ -242,7 +278,7 @@
             userName,
             mainUser = document.body.querySelector('.main_user'),
             listUsers = document.body.querySelector('.list_users')
-            messages = document.body.querySelector('#messages')
+            messagesList = document.body.querySelector('#messages')
             form = document.body.querySelector('form')
     
         regBtn.addEventListener('click', function() {
@@ -267,8 +303,8 @@
                         <p class="user-last-message p-d"></p>
                       </div>
                   </div>`
-                } 
-                 
+                }
+                socket.emit('messages')
               });
             }
         })
