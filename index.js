@@ -21,14 +21,26 @@ io.on('connection', (socket) => {
       io.emit('showMessages', messages);
     })
 
-    socket.on('disconnect', (name) => {
+    socket.on('disconnect', () => {
       console.log('user disconnected');
-      io.emit('logout user', name);
+      io.emit('logout user');
     });
 
-    socket.on('logout user', (name) => {
-      io.emit('logout user', name)
+
+    socket.on('updateUsersTable', (id) => {
+      console.log(users.length, '|', id)
+      users.splice(id, 1);
+      console.log(users.length)
+      // io.emit('logout users', id)
+      // io.emit('show users', users, users.length);
+      // io.emit('logout user', name)
     })
+    // socket.on('logout user', (id) => {
+    //   users.slice(id, id + 1);
+    //   io.emit('logout users', id)
+    //   io.emit('show users', users, users.length);
+    //   // io.emit('logout user', name)
+    // })
 
     socket.on('chat message', (msg, name, date) => {
         messages.push( {msg: msg, name: name, date: date})
@@ -38,9 +50,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new user', (name) => {
-      users.push( { name : name } )
-      io.emit('new user', users);
-      console.log('user: ' + name);
+      users.push( { name : name, id : users.length } )
+      io.emit('show users', users, users.length);
+      io.emit('new user', users.length)
   });
 
 

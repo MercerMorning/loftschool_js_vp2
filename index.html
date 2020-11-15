@@ -105,6 +105,11 @@
         font-size: 20px;
       }
 
+      .list_users {
+        height: 400px;
+        overflow: scroll;
+      }
+
       .chat {
        
         background-color: #17212b;
@@ -170,7 +175,7 @@
       <div class="about">
         <p class="p-n">Чат</p>
         <br>
-        <p class="p-d">2 учатсника</p>
+        <p class="p-d p-count"></p>
       </div>
       <ul id="messages">
         <!-- <li>
@@ -206,24 +211,8 @@
             return false;
         });
 
-        socket.on('some event'), function(){
-          alert(123)
-          // messagesList.innerHTML += 
-          //     `
-          //     <li>
-          //       <div class="main_user">  
-          //       <div class="avatar"></div>
-          //         <div class="user-info">
-          //           <p class="p-d">${message.name}</p>
-          //           <p class="p-d">${message.msg}</p>
-          //           <p class="time p-d">${message.date}</p>
-          //         </div>
-          //       </div>
-          //     </li>
-          //     `
-        }
-
         socket.on('showMessages', function(messages){
+          messagesList.innerHTML = '';
           for (let message of messages) {
             messagesList.innerHTML += 
               `
@@ -258,18 +247,21 @@
                 </div>
               </li>
               `
-           
-            
-            // $('#messages').append($('<li>').text(msg));
         });
 
         window.onbeforeunload  = () => {
-          socket.emit('logout user', userName);
+          socket.emit('logout user', userId);
         }
 
-        socket.on('logout user', function(name){
-            let userRow = document.body.querySelector(`#${name}`)
-            userRow.remove()
+        // socket.on('disconnect', function(){
+          
+        //   // socket.emit('logout user', userId);
+        // }) 
+
+        socket.on('logout user', function(){
+          // document.body.querySelector().remove()
+          socket.emit('updateUsersTable', userId)
+          // listUsers.querySelector(`#${name}`).сremove()
         });
 
         var regCont = document.body.querySelector('.reg'),
@@ -277,37 +269,37 @@
             inputName = document.body.querySelector('.user_name'),
             userName,
             mainUser = document.body.querySelector('.main_user'),
-            listUsers = document.body.querySelector('.list_users')
-            messagesList = document.body.querySelector('#messages')
-            form = document.body.querySelector('form')
+            listUsers = document.body.querySelector('.list_users'),
+            messagesList = document.body.querySelector('#messages'),
+            form = document.body.querySelector('form'),
+            counter = document.body.querySelector('.p-count'),
+            userId = null
     
         regBtn.addEventListener('click', function() {
             if (inputName.value) {
                 userName = inputName.value;
                 regCont.style.display = 'none'
                 socket.emit('new user', userName);
-                // let newUser = `<div class="main_user">  
-                //   <div class="avatar"></div>
-                //     <div class="user-info">
-                //       <p id=${userName} class="user-name p-n">${userName}</p>
-                //       <p class="user-last-message p-d"></p>
-                //     </div>
-                // </div>`
-                // listUsers.innerHTML += newUser;
-                socket.on('new user', function(users){
-                  for (let user of users) {
-                    listUsers.innerHTML += `<div class="main_user">  
+                socket.on('new user', function (id) {
+                  userId = id;
+                })
+            }
+        })
+
+        socket.on('show users', function(users, count){
+                  listUsers.innerHTML = '';
+                  counter.innerHTML = count + ' участников';
+                  for (let user of users.values() ) {
+                    listUsers.innerHTML += `<div id=u${user.id} class="main_user">  
                     <div class="avatar"></div>
                       <div class="user-info">
-                        <p id=${user.name} class="user-name p-n">${user.name}</p>
+                        <p  class="user-name p-n">${user.name}</p>
                         <p class="user-last-message p-d"></p>
                       </div>
                   </div>`
                 }
                 socket.emit('messages')
               });
-            }
-        })
     });
     
     
