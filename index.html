@@ -233,7 +233,7 @@
             // $('#messages').append($('<li>').text(msg));
         });
 
-        socket.on('chat message', function(message){
+        socket.on('add message', function(message){
             messagesList.innerHTML += 
               `
               <li>
@@ -248,15 +248,16 @@
               </li>
               `
         });
+        
         window.onbeforeunload  = () => {
-          socket.emit('logout user', userId);
+          socket.emit('updateUsersTable', userId);
         }
         
         // socket.on('update list', (id) => alert(id))
 
-        socket.on('delete user', (id) => {
-          socket.emit('updateUsersTable', id);
-        })
+        // socket.on('delete user', (id) => {
+        //   socket.emit('updateUsersTable', id);
+        // })
         // socket.on('disconnect', function(){
           
         //   // socket.emit('logout user', userId);
@@ -295,7 +296,7 @@
                   listUsers.innerHTML = '';
                   counter.innerHTML = count + ' участников';
                   for (let user of users ) {
-                    if (user !== 'logout') {
+                    if (user.status !== 'offline') {
                       listUsers.innerHTML += 
                       `
                       <div id=u${user.id} class="main_user">  
