@@ -135,10 +135,18 @@
         padding: 20px;
       }
 
+      .hidden {
+        display: none;
+      }
+
 
     </style>
   </head>
   <body>
+    <img class="test-img"> 
+    <div class="ava-modal hidden">
+      <input type="file" id="photoinput">
+    </div>
     <div class="reg">
       <div class="container">
         <div class="rectangle">
@@ -149,6 +157,7 @@
             <image  x="0px" y="0px" width="85px" height="66px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFUAAABCCAMAAAAR+GpLAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB4FBMVEVSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMFSiMH////F271FAAAAnnRSTlMAM5DG2tfZ1rZuDiqv7IdG+rsRNccF5495F/mGgLFnEPBFtDbyDWI5GhwbHRRsyfv9/P66O8govAjd0lSehAaf8QE626ExXdQKV6rMwt5YZmgZoyLTm5LoWU6Imc/unJ10MG0kf0hHpCnrSyaicTLAeuFgT62lb5N3rgITLLUjhZoSNF/N1d/F0fgg6i8tIZGJD2PYZKdzq8qpxCfLBENrmfAAAAABYktHRJ/otZOdAAAAB3RJTUUH5AsNCSs4lRhkgAAAApVJREFUWMPt2OlXElEYBvC3AC0qbZFsodJES0sUMjXC1KIs0qyUgiSXNsqk1bS0Uiuyfd+X92/t3jtjxWz3zgx84zmHYYZ57u/MGYY7nAEQyKLFDqeLn6LiJUvdIh7NsuUonhUlYmjpShMoyarVAugacyZJGR/1rDWtYjlXXWceRVzPU8toa8NGr2A2MXUzB93CvqoK0csFKpm6ldOqYi1ftahaw/rFnNY2S6ozL8fqKqgFtaAW1IIqb7m319YpsmOnPdVd7/c1NAYUCe6ypTbp3PJ321Gb9e7qLTbU1j16asiGupcsG4u0/jiGbahtdNQ+vZZVtZ0sOzr1WvstqQcgYjjqoKR6RNVDrN8FYUP1sI+2OkRROMLUKEeFFtoKHHX4hdLdw9RjPLUXLaSap0p/YM3lOHDVExVm0ZPAV6Gv3xwaAxEV4NRpcbMrDoIqtCbOtA8kpWFnB4fCygzGYjHyFhkYHpFHiKgs5yT1vNB1K6xeYOhFrV2XUimvOfVyQl7xUnRYs0NmqCvm1FGMXP2rjml30oh+c+o1st/ZJqnXIVcqm2EdZOUG3qS1W7dzpo6TlTtYR5ZNOJFTdfIusPm2UkSNiKj3yMoUeU03II6KHqv+HQbgPlUfyBsPta/YCcRk9iczaHQ3BBih6qy8MUfWH6k7jxGfZH+SQHrnzug99+l/StWqhTaZbeej44pEnyEqfludGf5ENJ99ljUSnFMcfi0Xff7iX7smqNV4+Up1Vl67jNFM8//tN70z3fRaKylfyNt38fcaX4jnQyqkeLaW+chAnys59knVjyN+Bmv5QtWvmrvq8ZtFFGCIqN8190wGhJ8GqvND+qWqky61jsJ0j+XTZ5Sf+CsPKqRDU/lg+35bG/cHCpdecjQHoocAAAAASUVORK5CYII=" />
           </svg>
         </div>
+        
         <div class="reg-form">
           <h1>Авторизация</h1>
           <br>
@@ -166,9 +175,9 @@
       </div>
     </div>
     <div class="participants">
-      
+        <button class="change_ava_btn" style="width: 50px; height: 50px;">изменить аву</button>
         <div class="list_users">
-
+            
         </div>
     </div>
     <div class="chat">
@@ -198,7 +207,29 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-      
+    
+    let change_ava_btn = document.querySelector('.change_ava_btn'),
+        ava_modal = document.querySelector('.ava-modal'),
+        photo_input = document.querySelector('#photoinput'),
+        fileReader = new FileReader(),
+        img = document.querySelector('.test-img')
+
+    change_ava_btn.addEventListener('click', () => {
+      ava_modal.classList.toggle('hidden')
+    })
+
+    photo_input.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+
+      if (file) {
+        fileReader.readAsDataURL(file);
+      }
+    })
+
+    fileReader.addEventListener('load', function(){
+      img.src = fileReader.result;
+    }) 
+
     $(function () {
         var socket = io();
         // var tab = window.open(url);
@@ -249,9 +280,9 @@
               `
         });
         
-        // window.onbeforeunload  = () => {
-        //   socket.emit('updateUsersTable', userId);
-        // }
+        window.onbeforeunload  = () => {
+          socket.emit('updateUsersTable', userId);
+        }
         
         // socket.on('update list', (id) => alert(id))
 

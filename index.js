@@ -39,18 +39,18 @@ io.on('connection', (socket) => {
     });
 
 
-    // socket.on('updateUsersTable', (id) => {
-    //   if (id != null) {
-    //     console.log(users.length, 'old length', id)
-    //     console.log(id)
-    //     users[id].status = 'offline'
-    //     console.log(users.length, 'new length')
-    //     console.log(users)
-    //     messages.push( {msg: users[id].name + 'вышел', name: 'чат', date: 123})
-    //     io.emit('add message', {msg: users[id].name + ' вышел', name: 'чат', date: 123})
-    //     io.emit('show users', users, users.length)
-    //   }
-    // })
+    socket.on('updateUsersTable', (id) => {
+      if (socket.userId) {
+        console.log(users.length, 'old length', socket.userId)
+        console.log(socket.userId)
+        users[socket.userId].status = 'offline'
+        console.log(users.length, 'new length')
+        console.log(users)
+        messages.push( {msg: users[socket.userId].name + 'вышел', name: 'чат', date: 123})
+        io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123})
+        io.emit('show users', users, users.length)
+      }
+    })
 
     socket.on('chat message', (msg, name, date) => {
         messages.push( {msg: msg, name: name, date: date})
