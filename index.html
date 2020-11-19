@@ -235,7 +235,7 @@
         $('form').submit(function(e){
             e.preventDefault(); // prevents page reloading
             let aMinuteAgo = new Date( (new Date()).getTime() - 1000 * 60 );
-            socket.emit('chat message', $('#m').val(), userName, aMinuteAgo);
+            socket.emit('chat message', $('#m').val(), aMinuteAgo);
             $('#m').val('');
             return false;
         });
@@ -246,16 +246,16 @@
           socket.emit('update ava', fileReader.result);
         }) 
 
-        socket.on('showMessages', function(messages, user){
+        socket.on('showMessages', function(messages){
           messagesList.innerHTML = '';
           for (let message of messages) {
             messagesList.innerHTML += 
               `
               <li>
                 <div class="main_user">  
-                <div class="avatar" style="background:url('${user.src}')"></div>
+                <div class="avatar" style="background:url('${message.user.src}')"></div>
                   <div class="user-info">
-                    <p class="p-d">${message.name}</p>
+                    <p class="p-d">${message.user.name}</p>
                     <p class="p-d">${message.msg}</p>
                     <p class="time p-d">${message.date}</p>
                   </div>
@@ -268,21 +268,21 @@
             // $('#messages').append($('<li>').text(msg));
         });
 
-        socket.on('add message', function(message, user){
-            messagesList.innerHTML += 
-              `
-              <li>
-                <div class="main_user">  
-                <div class="avatar" style="background:url('${user.src}')"></div>
-                  <div class="user-info">
-                    <p class="p-d">${message.name}</p>
-                    <p class="p-d">${message.msg}</p>
-                    <p class="time p-d">${message.date}</p>
-                  </div>
-                </div>
-              </li>
-              `
-        });
+        // socket.on('add message', function(message, user){
+        //     messagesList.innerHTML += 
+        //       `
+        //       <li>
+        //         <div class="main_user">  
+        //         <div class="avatar" style="background:url('${user.src}')"></div>
+        //           <div class="user-info">
+        //             <p class="p-d">${message.name}</p>
+        //             <p class="p-d">${message.msg}</p>
+        //             <p class="time p-d">${message.date}</p>
+        //           </div>
+        //         </div>
+        //       </li>
+        //       `
+        // });
         
         window.onbeforeunload  = () => {
           socket.emit('updateUsersTable', userId);

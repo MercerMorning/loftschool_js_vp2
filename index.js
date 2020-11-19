@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 
     socket.on('messages', function() {
-      io.emit('showMessages', messages, users[socket.userId]);
+      io.emit('showMessages', messages);
     })
 
     // socket.on('logout user', (userId) => {
@@ -32,9 +32,14 @@ io.on('connection', (socket) => {
         users[socket.userId].status = 'offline'
         console.log(users.length, 'new length')
         console.log(users)
-        messages.push( {msg: users[socket.userId].name + 'вышел', name: 'чат', date: 123})
-        io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123}, users[socket.userId])
-        io.emit('show users', users, users.length)
+        messages.push( {msg: users[socket.userId].name + ' вышел', user: users[socket.userId], date: Date.now()})
+        users[socket.userId].status = 'offline'
+        // io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123}, users[socket.userId])
+        
+        // io.emit('show users', users, users.length)
+        io.emit('showMessages', messages);
+        io.emit('show users', users.filter(user => user.status != 'offline'), users.filter(user => user.status != 'offline').length)
+        
       }
     });
 
@@ -46,8 +51,8 @@ io.on('connection', (socket) => {
         users[socket.userId].status = 'offline'
         console.log(users.length, 'new length')
         console.log(users)
-        messages.push( {msg: users[socket.userId].name + 'вышел', name: 'чат', date: 123})
-        io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123})
+      
+        // io.emit('showMessages', messages)
         io.emit('show users', users, users.length)
       }
     })
@@ -59,10 +64,10 @@ io.on('connection', (socket) => {
       // console.log('photo:', users[socket.userId].src)
     })
 
-    socket.on('chat message', (msg, name, date) => {
-        messages.push( {msg: msg, name: name, date: date})
+    socket.on('chat message', (msg, date) => {
+        messages.push( {msg: msg, user: users[socket.userId], date: date})
         console.log(messages)
-        io.emit('showMessages', messages, users[socket.userId]);
+        io.emit('showMessages', messages);
         // io.emit('add message', {msg: msg, name: name, date: date});
         console.log('message: ' + msg);
     });
