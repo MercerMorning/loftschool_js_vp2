@@ -62,7 +62,8 @@ io.on('connection', (socket) => {
     socket.on('chat message', (msg, name, date) => {
         messages.push( {msg: msg, name: name, date: date})
         console.log(messages)
-        io.emit('add message', {msg: msg, name: name, date: date});
+        io.emit('showMessages', messages, users[socket.userId]);
+        // io.emit('add message', {msg: msg, name: name, date: date});
         console.log('message: ' + msg);
     });
 
