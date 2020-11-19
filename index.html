@@ -143,7 +143,7 @@
     </style>
   </head>
   <body>
-    <img class="test-img"> 
+    <!-- <img class="test-img">  -->
     <div class="ava-modal hidden">
       <input type="file" id="photoinput">
     </div>
@@ -226,9 +226,7 @@
       }
     })
 
-    fileReader.addEventListener('load', function(){
-      img.src = fileReader.result;
-    }) 
+    
 
     $(function () {
         var socket = io();
@@ -242,14 +240,20 @@
             return false;
         });
 
-        socket.on('showMessages', function(messages){
+        fileReader.addEventListener('load', function(){
+          // img.src = fileReader.result
+          // socket.emit('update ava', fileReader.result);
+          socket.emit('update ava', fileReader.result);
+        }) 
+
+        socket.on('showMessages', function(messages, user){
           messagesList.innerHTML = '';
           for (let message of messages) {
             messagesList.innerHTML += 
               `
               <li>
                 <div class="main_user">  
-                <div class="avatar"></div>
+                <div class="avatar" style="background:url('${user.src}')"></div>
                   <div class="user-info">
                     <p class="p-d">${message.name}</p>
                     <p class="p-d">${message.msg}</p>
@@ -264,12 +268,12 @@
             // $('#messages').append($('<li>').text(msg));
         });
 
-        socket.on('add message', function(message){
+        socket.on('add message', function(message, user){
             messagesList.innerHTML += 
               `
               <li>
                 <div class="main_user">  
-                <div class="avatar"></div>
+                <div class="avatar" style="background:url('${user.src}')"></div>
                   <div class="user-info">
                     <p class="p-d">${message.name}</p>
                     <p class="p-d">${message.msg}</p>
@@ -331,7 +335,7 @@
                       listUsers.innerHTML += 
                       `
                       <div id=u${user.id} class="main_user">  
-                        <div class="avatar"></div>
+                        <div class="avatar" style="background:url('${user.src}')"></div>
                           <div class="user-info">
                             <p  class="user-name p-n">${user.name}</p>
                             <p class="user-last-message p-d"></p>

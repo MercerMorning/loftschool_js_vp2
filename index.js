@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 
     socket.on('messages', function() {
-      io.emit('showMessages', messages);
+      io.emit('showMessages', messages, users[socket.userId]);
     })
 
     // socket.on('logout user', (userId) => {
@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
         console.log(users.length, 'new length')
         console.log(users)
         messages.push( {msg: users[socket.userId].name + 'вышел', name: 'чат', date: 123})
-        io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123})
+        io.emit('add message', {msg: users[socket.userId].name + ' вышел', name: 'чат', date: 123}, users[socket.userId])
         io.emit('show users', users, users.length)
       }
     });
@@ -52,6 +52,13 @@ io.on('connection', (socket) => {
       }
     })
 
+    socket.on('update ava', (src) => {
+      // users[socket.userId].src = src;
+      users[socket.userId].src = src;
+      io.emit('show users', users, users.length);
+      // console.log('photo:', users[socket.userId].src)
+    })
+
     socket.on('chat message', (msg, name, date) => {
         messages.push( {msg: msg, name: name, date: date})
         console.log(messages)
@@ -61,7 +68,7 @@ io.on('connection', (socket) => {
 
     socket.on('new user', (name) => {
       socket.userId =  users.length;
-      users.push( { name : name, id : users.length, status: 'online'} )
+      users.push( { name : name, id : users.length, status: 'online', src: ""} )
       console.log(users)
       io.emit('show users', users, users.length);
       io.emit('new user', users.length - 1)
