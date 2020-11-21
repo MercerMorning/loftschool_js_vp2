@@ -13,7 +13,28 @@
       #messages { list-style-type: none; margin: 0; padding: 0; flex-grow: 1;}
       #messages li { padding: 5px 10px; }
 
-      
+      .for-img {
+        width: 250px;
+        height: 250px;
+        background-color: white;
+        margin: auto;
+      }
+
+      .ava-modal {
+        position: fixed;
+        width: 50%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .ava-modal section{
+        background-color: wheat;
+        width: 80%;
+        height: 300px;
+      }
+
       .reg {
           position: fixed;
           width: 100%;
@@ -139,13 +160,23 @@
         display: none;
       }
 
+      .me {
+        position: absolute;
+        top: 0;
+      }
 
     </style>
   </head>
   <body>
     <!-- <img class="test-img">  -->
     <div class="ava-modal hidden">
-      <input type="file" id="photoinput">
+      <section>
+        <div class="for-img">
+
+        </div>
+        <input type="file" id="photoinput">
+      </section>
+    
     </div>
     <div class="reg">
       <div class="container">
@@ -175,7 +206,7 @@
       </div>
     </div>
     <div class="participants">
-        <button class="change_ava_btn" style="width: 50px; height: 50px;">изменить аву</button>
+        <!-- <button class="change_ava_btn" style="width: 50px; height: 50px;">изменить аву</button> -->
         <div class="list_users">
             
         </div>
@@ -208,15 +239,19 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
     
-    let change_ava_btn = document.querySelector('.change_ava_btn'),
+    let change_ava_btn = document.querySelector('.me'),
         ava_modal = document.querySelector('.ava-modal'),
         photo_input = document.querySelector('#photoinput'),
         fileReader = new FileReader(),
-        img = document.querySelector('.test-img')
+        // img = document.querySelector('.test-img'),
+        img = document.querySelector('.for-img');
 
-    change_ava_btn.addEventListener('click', () => {
-      ava_modal.classList.toggle('hidden')
-    })
+        document.body.addEventListener('click', () => {
+          ava_modal.classList.remove('hidden')
+
+        })
+    // change_ava_btn.addEventListener('click', () => {
+    // })
 
     photo_input.addEventListener('change', function(e) {
       const file = e.target.files[0];
@@ -241,7 +276,8 @@
         });
 
         fileReader.addEventListener('load', function(){
-          // img.src = fileReader.result
+          // img.style.backround = `url('${fileReader.result}')`
+          img.style.backgroundImage  = `url('${fileReader.result}')`
           // socket.emit('update ava', fileReader.result);
           socket.emit('update ava', fileReader.result);
         }) 
@@ -327,14 +363,17 @@
             }
         })
 
-        socket.on('show users', function(users, count){
+        socket.on('show users', function(users, count, curUsr){
                   listUsers.innerHTML = '';
                   counter.innerHTML = count + ' участников';
                   for (let user of users ) {
                     if (user.status !== 'offline') {
+                      console.log(curUsr)
+                      let isMe = user.id === curUsr.id ? 'me' : '';
+                      
                       listUsers.innerHTML += 
                       `
-                      <div id=u${user.id} class="main_user">  
+                      <div id=u${user.id} class="main_user ${isMe}">  
                         <div class="avatar" style="background:url('${user.src}')"></div>
                           <div class="user-info">
                             <p  class="user-name p-n">${user.name}</p>

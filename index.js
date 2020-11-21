@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
         
         // io.emit('show users', users, users.length)
         io.emit('showMessages', messages);
-        io.emit('show users', users.filter(user => user.status != 'offline'), users.filter(user => user.status != 'offline').length)
+        io.emit('show users', users.filter(user => user.status != 'offline'), users.filter(user => user.status != 'offline').length, users[socket.userId])
         
       }
     });
@@ -53,14 +53,14 @@ io.on('connection', (socket) => {
         console.log(users)
       
         // io.emit('showMessages', messages)
-        io.emit('show users', users, users.length)
+        io.emit('show users', users, users.length, users[socket.userId])
       }
     })
 
     socket.on('update ava', (src) => {
       // users[socket.userId].src = src;
       users[socket.userId].src = src;
-      io.emit('show users', users, users.length);
+      io.emit('show users', users, users.length, users[socket.userId]);
       // console.log('photo:', users[socket.userId].src)
     })
 
@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
       socket.userId =  users.length;
       users.push( { name : name, id : users.length, status: 'online', src: ""} )
       console.log(users)
-      io.emit('show users', users, users.length);
+      io.emit('show users', users, users.length, users[socket.userId]);
       io.emit('new user', users.length - 1)
   });
 
