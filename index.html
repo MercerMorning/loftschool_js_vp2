@@ -175,6 +175,7 @@
 
         </div>
         <input type="file" id="photoinput">
+        <button id="save_img">save</button>
       </section>
     
     </div>
@@ -279,7 +280,12 @@
           // img.style.backround = `url('${fileReader.result}')`
           img.style.backgroundImage  = `url('${fileReader.result}')`
           // socket.emit('update ava', fileReader.result);
-          socket.emit('update ava', fileReader.result);
+          saveImg.addEventListener('click', () => {
+            socket.emit('update ava', fileReader.result)
+            ava_modal.classList.add('hidden')
+          })
+          
+          
         }) 
 
         socket.on('showMessages', function(messages){
@@ -350,6 +356,7 @@
             messagesList = document.body.querySelector('#messages'),
             form = document.body.querySelector('form'),
             counter = document.body.querySelector('.p-count'),
+            saveImg = document.body.querySelector('#save_img'),
             userId = null
     
         regBtn.addEventListener('click', function() {
